@@ -1,0 +1,70 @@
+modules:
+  - name: project-forge
+    role: Project scaffolding and bootstrap
+    repo: LanNguyenSi/project-forge
+    status: beta
+    inputs: [template, project-name]
+    outputs: [repository, initial-structure]
+
+  - name: agent-planforge
+    role: Architecture planning, ADRs, backlog generation
+    repo: LanNguyenSi/agent-planforge
+    status: beta
+    inputs: [project-context, requirements]
+    outputs: [architecture-plan, backlog, ADR-candidates]
+
+  - name: agent-tasks
+    role: Human-agent task workflow
+    repo: LanNguyenSi/agent-tasks
+    status: active
+    inputs: [task-definitions]
+    outputs: [task-state, PRs, comments]
+    live: https://agent-tasks.opentriologue.ai
+
+  - name: agent-preflight
+    role: Pre-push validation
+    repo: LanNguyenSi/agent-preflight
+    status: beta
+    inputs: [code-changes]
+    outputs: [validation-report]
+
+  - name: deploy-panel
+    role: Deployment management
+    repo: LanNguyenSi/deploy-panel
+    status: active
+    inputs: [server, app, deploy-config]
+    outputs: [deploy-status, audit-log]
+    live: https://deploy-panel.opentriologue.ai
+    api: /api/v1/
+    mcp: true
+    github-action: true
+
+  - name: agent-relay
+    role: Controlled VPS execution
+    repo: LanNguyenSi/agent-relay
+    status: active
+    inputs: [deploy-request]
+    outputs: [deploy-result, health-status]
+
+  - name: project-pilot
+    role: Control plane
+    repo: LanNguyenSi/project-pilot
+    status: alpha
+    inputs: [module-states]
+    outputs: [orchestration-commands]
+    live: https://project-forge.opentriologue.ai
+
+  - name: agent-ops-dashboard
+    role: Operational monitoring
+    repo: LanNguyenSi/agent-ops-dashboard
+    status: beta
+    inputs: [agent-heartbeats, repo-data]
+    outputs: [health-dashboard, activity-feed]
+    live: https://ops.opentriologue.ai
+
+  - name: agent-control
+    role: Agent coordination
+    repo: LanNguyenSi/agent-control
+    status: alpha
+    inputs: [agent-configs]
+    outputs: [coordination-state]

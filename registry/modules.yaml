@@ -6,12 +6,21 @@ modules:
     inputs: [template, project-name]
     outputs: [repository, initial-structure]
 
+  - name: scaffoldkit
+    role: Declarative project scaffolding engine
+    repo: LanNguyenSi/scaffoldkit
+    status: beta
+    inputs: [blueprint, project-config]
+    outputs: [project-files, directory-structure]
+    note: Runtime dependency of project-forge
+
   - name: agent-planforge
     role: Architecture planning, ADRs, backlog generation
     repo: LanNguyenSi/agent-planforge
     status: beta
     inputs: [project-context, requirements]
     outputs: [architecture-plan, backlog, ADR-candidates]
+    note: Runtime dependency of project-forge
 
   - name: agent-tasks
     role: Human-agent task workflow

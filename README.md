@@ -13,6 +13,7 @@ Plan → Build → Validate → Deploy → Monitor
 | Module | Role | Repo | Status |
 |--------|------|------|--------|
 | **project-forge** | Project scaffolding and bootstrap | [project-forge](https://github.com/LanNguyenSi/project-forge) | beta |
+| **scaffoldkit** | Declarative project scaffolding engine (runtime dep of project-forge) | [scaffoldkit](https://github.com/LanNguyenSi/scaffoldkit) | beta |
 | **agent-planforge** | Architecture planning, ADRs, initial backlog | [agent-planforge](https://github.com/LanNguyenSi/agent-planforge) | beta |
 | **agent-tasks** | Human-agent task workflow and collaboration | [agent-tasks](https://github.com/LanNguyenSi/agent-tasks) | active |
 | **agent-preflight** | Local validation before push or handoff | [agent-preflight](https://github.com/LanNguyenSi/agent-preflight) | beta |

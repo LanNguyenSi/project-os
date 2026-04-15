@@ -1,0 +1,7 @@
+# Private repos referenced in README — the workflow's ambient
+# GITHUB_TOKEN cannot see them (they'd 404 under any CI token scoped
+# to this repo), so lychee would always fail. Existence of these repos
+# is instead verified out-of-band; drift detection for public modules
+# still runs via the module-status job in .github/workflows/link-check.yml.
+https://github.com/LanNguyenSi/agent-control
+https://github.com/LanNguyenSi/triologue

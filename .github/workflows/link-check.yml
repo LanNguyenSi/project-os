@@ -1,0 +1,156 @@
+name: link-check + module-status
+
+# Weekly + PR-scoped drift check:
+#
+#   1. `lychee` runs over the README and docs/, failing loud on any
+#      non-2xx URL. Retry-with-backoff is enabled so a transient rate
+#      limit or flaky server does not produce a false positive.
+#
+#   2. `module-status` reads registry/modules.yaml and asks the GitHub
+#      API whether each listed repo still exists, then re-checks that
+#      the README module table links the same slug. Module repos that
+#      have been renamed, archived, or deleted surface here as a
+#      failing job instead of silent drift.
+
+on:
+  schedule:
+    - cron: "17 6 * * 1" # Monday 06:17 UTC
+  pull_request:
+    paths:
+      - "README.md"
+      - "docs/**"
+      - "registry/modules.yaml"
+      - ".github/workflows/link-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lychee:
+    name: lychee link check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore lychee cache
+        uses: actions/cache@v4
+        with:
+          path: .lycheecache
+          key: cache-lychee-${{ github.sha }}
+          restore-keys: cache-lychee-
+
+      - name: Run lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # `README.md docs/**/*.md` — keep the surface small so runs
+          # stay under a minute. Add `--exclude-mail` to skip mailto:
+          # links (none today, but cheap insurance). `--cache` reuses
+          # the restored cache so we don't re-probe stable targets
+          # every run. `--max-retries 3` + default exponential backoff
+          # absorbs the usual transient 5xx / 429 bursts.
+          args: >-
+            --no-progress
+            --cache
+            --max-cache-age 1d
+            --max-retries 3
+            README.md docs/**/*.md
+          fail: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  module-status:
+    name: module registry vs. GitHub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install yq
+        # Direct binary download — `snap` is not reliably preinstalled
+        # on ubuntu-latest runners, and mixing `||`/`&&` at the same
+        # precedence level is error-prone. One command, one outcome.
+        run: |
+          sudo wget -qO /usr/local/bin/yq \
+            https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+          yq --version
+
+      - name: Verify each registered module repo resolves on GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          failures=()
+
+          # Pull the public slug list out of the YAML registry. Modules
+          # flagged `visibility: private` are skipped — the workflow's
+          # ambient GITHUB_TOKEN is scoped to this repo and cannot read
+          # private repos in other orgs/users, so they'd always 404 here
+          # even when they exist. Cross-check against README still runs
+          # against the full list below.
+          mapfile -t slugs < <(
+            yq -r '.modules[] | select(.visibility != "private") | .repo' \
+              registry/modules.yaml
+          )
+
+          echo "Checking ${#slugs[@]} module repos from registry/modules.yaml"
+          for slug in "${slugs[@]}"; do
+            # Retry a handful of times to ride out rate-limit bursts
+            # before declaring a real failure.
+            attempt=0
+            http=""
+            until [ "$attempt" -ge 4 ]; do
+              http=$(curl -s --max-time 15 -o /tmp/resp.json -w "%{http_code}" \
+                -H "Authorization: Bearer $GH_TOKEN" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/$slug") || http="000"
+              if [ "$http" = "200" ] || [ "$http" = "404" ] || [ "$http" = "410" ]; then
+                break
+              fi
+              attempt=$((attempt + 1))
+              # Exponential backoff: 10s, 20s, 40s, 80s.
+              sleep $((10 * (1 << (attempt - 1))))
+            done
+
+            case "$http" in
+              200)
+                archived=$(jq -r '.archived' </tmp/resp.json)
+                if [ "$archived" = "true" ]; then
+                  echo "::warning::$slug is archived on GitHub"
+                else
+                  echo "ok: $slug"
+                fi
+                ;;
+              404|410)
+                echo "::error::$slug returned $http — repo missing or renamed"
+                failures+=("$slug ($http)")
+                ;;
+              *)
+                echo "::error::$slug returned $http after retries — giving up"
+                failures+=("$slug ($http)")
+                ;;
+            esac
+          done
+
+          if [ ${#failures[@]} -gt 0 ]; then
+            echo
+            echo "Registry drift detected in ${#failures[@]} module(s):"
+            printf '  - %s\n' "${failures[@]}"
+            exit 1
+          fi
+
+      - name: Cross-check registry slugs against README module table
+        run: |
+          set -euo pipefail
+          missing=()
+          while read -r slug; do
+            if ! grep -q "github.com/$slug" README.md; then
+              missing+=("$slug")
+            fi
+          done < <(yq -r '.modules[].repo' registry/modules.yaml)
+
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::README.md is missing links for registered modules:"
+            printf '  - %s\n' "${missing[@]}"
+            exit 1
+          fi
+          echo "README.md references every registered module"

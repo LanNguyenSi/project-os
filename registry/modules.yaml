@@ -70,11 +70,3 @@ modules:
     inputs: [agent-heartbeats, repo-data]
     outputs: [health-dashboard, activity-feed]
     live: https://ops.opentriologue.ai
-
-  - name: agent-control
-    role: Agent coordination
-    repo: LanNguyenSi/agent-control
-    status: alpha
-    visibility: private
-    inputs: [agent-configs]
-    outputs: [coordination-state]

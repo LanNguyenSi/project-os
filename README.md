@@ -1,6 +1,6 @@
 # Project OS
 
-The operating system for human-agent software development — from planning to deployment.
+The operating system for human-agent software development, from planning to deployment.
 
 Project OS is a suite of tools that covers the full lifecycle of building software with AI agents: project setup, planning, task management, pre-flight validation, deployment, and operational monitoring.
 
@@ -10,18 +10,19 @@ Project OS is a suite of tools that covers the full lifecycle of building softwa
 Plan → Build → Validate → Deploy → Monitor
 ```
 
-| Module | Role | Repo | Status |
-|--------|------|------|--------|
-| **project-forge** | Project scaffolding and bootstrap | [project-forge](https://github.com/LanNguyenSi/project-forge) | beta |
-| **scaffoldkit** | Declarative project scaffolding engine (runtime dep of project-forge) | [scaffoldkit](https://github.com/LanNguyenSi/scaffoldkit) | beta |
-| **agent-planforge** | Architecture planning, ADRs, initial backlog | [agent-planforge](https://github.com/LanNguyenSi/agent-planforge) | beta |
-| **agent-tasks** | Human-agent task workflow and collaboration | [agent-tasks](https://github.com/LanNguyenSi/agent-tasks) | active |
-| **agent-preflight** | Local validation before push or handoff | [agent-preflight](https://github.com/LanNguyenSi/agent-preflight) | beta |
-| **deploy-panel** | Deployment management, rollback, status | [deploy-panel](https://github.com/LanNguyenSi/deploy-panel) | active |
-| **agent-relay** | Controlled execution on target servers | [agent-relay](https://github.com/LanNguyenSi/agent-relay) | active |
-| **project-pilot** | Control plane across modules | [project-pilot](https://github.com/LanNguyenSi/project-pilot) | alpha |
-| **agent-ops-dashboard** | Operational monitoring and agent health | [agent-ops-dashboard](https://github.com/LanNguyenSi/agent-ops-dashboard) | beta |
-| **agent-control** | Agent coordination and orchestration | [agent-control](https://github.com/LanNguyenSi/agent-control) | alpha |
+| Module | Role | Repo | Live | Status |
+|--------|------|------|------|--------|
+| **project-forge** | Project scaffolding and bootstrap | [project-forge](https://github.com/LanNguyenSi/project-forge) | [project-forge.opentriologue.ai](https://project-forge.opentriologue.ai) | active |
+| **scaffoldkit** | Declarative project scaffolding engine (runtime dep of project-forge) | [scaffoldkit](https://github.com/LanNguyenSi/scaffoldkit) | via project-forge | beta |
+| **agent-planforge** | Architecture planning, ADRs, initial backlog | [agent-planforge](https://github.com/LanNguyenSi/agent-planforge) | via project-forge | beta |
+| **agent-tasks** | Human-agent task workflow and collaboration | [agent-tasks](https://github.com/LanNguyenSi/agent-tasks) | [agent-tasks.opentriologue.ai](https://agent-tasks.opentriologue.ai) | active |
+| **agent-tasks-cli** | CLI client for agent-tasks | [agent-tasks-cli](https://github.com/LanNguyenSi/agent-tasks-cli) | | beta |
+| **agent-preflight** | Local validation before push or handoff | [agent-preflight](https://github.com/LanNguyenSi/agent-preflight) | | beta |
+| **deploy-panel** | Deployment management, rollback, status | [deploy-panel](https://github.com/LanNguyenSi/deploy-panel) | [deploy-panel.opentriologue.ai](https://deploy-panel.opentriologue.ai) | active |
+| **agent-relay** | Controlled execution on target servers | [agent-relay](https://github.com/LanNguyenSi/agent-relay) | via deploy-panel | active |
+| **harness** | Declarative control plane: one YAML for grounding, tools, memory, hooks, policies | [harness](https://github.com/LanNguyenSi/harness) | | beta |
+| **project-pilot** | Unified control plane across modules | [project-pilot](https://github.com/LanNguyenSi/project-pilot) | | alpha |
+| **agent-ops-dashboard** | Operational monitoring and agent health | [agent-ops-dashboard](https://github.com/LanNguyenSi/agent-ops-dashboard) | [ops.opentriologue.ai](https://ops.opentriologue.ai) | active |
 
 ## How they connect
 
@@ -84,18 +85,20 @@ Each module runs independently. Start with what you need:
 
 ## Related Projects
 
-| Project | Description |
-|---------|-------------|
-| [agent-grounding](https://github.com/LanNguyenSi/agent-grounding) | Verification framework — runtime checks, claim validation, hypothesis tracking |
-| [depsight](https://github.com/LanNguyenSi/depsight) | Repository intelligence — dependency health, CI insights |
-| [telerithm](https://github.com/LanNguyenSi/telerithm) | Communication platform |
-| [triologue](https://github.com/LanNguyenSi/triologue) | Human-AI-AI collaboration platform |
+| Project | Description | Live |
+|---------|-------------|------|
+| [agent-grounding](https://github.com/LanNguyenSi/agent-grounding) | Verification framework: runtime checks, claim validation, hypothesis tracking | |
+| [depsight](https://github.com/LanNguyenSi/depsight) | GitHub-connected developer security dashboard: CVE tracking, license compliance, dependency health | [depsight.opentriologue.ai](https://depsight.opentriologue.ai) |
+| [codebase-oracle](https://github.com/LanNguyenSi/codebase-oracle) | Local-first MCP server, semantic index over your repos | |
+| [agent-memory](https://github.com/LanNguyenSi/agent-memory) | Sync, weave, and digest agent memories across sessions | |
+| [telerithm](https://github.com/LanNguyenSi/telerithm) | AI-powered log analytics for self-hosted teams | |
+| [triologue](https://opentriologue.ai) | Real-time AI ↔ AI ↔ Human collaboration platform (separate product) | [opentriologue.ai](https://opentriologue.ai) |
 
 ## Maturity
 
 We use honest maturity labels:
 
-- **alpha** — Functional but API may change significantly
-- **beta** — Core features stable, edges may be rough
-- **active** — In production use, actively developed
-- **stable** — Battle-tested, breaking changes are rare
+- **alpha**: functional but API may change significantly
+- **beta**: core features stable, edges may be rough
+- **active**: in production use, actively developed
+- **stable**: battle-tested, breaking changes are rare

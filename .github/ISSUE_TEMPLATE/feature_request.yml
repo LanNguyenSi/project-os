@@ -1,0 +1,20 @@
+name: Suite-level proposal
+description: Propose a new module, registry entry, or cross-module convention
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Use case
+      description: What gap in the Project OS suite does this fill?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: New module / registry entry / shared convention?
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

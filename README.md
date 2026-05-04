@@ -16,7 +16,6 @@ Plan → Build → Validate → Deploy → Monitor
 | **scaffoldkit** | Declarative project scaffolding engine (runtime dep of project-forge) | [scaffoldkit](https://github.com/LanNguyenSi/scaffoldkit) | via project-forge | beta |
 | **agent-planforge** | Architecture planning, ADRs, initial backlog | [agent-planforge](https://github.com/LanNguyenSi/agent-planforge) | via project-forge | beta |
 | **agent-tasks** | Human-agent task workflow and collaboration | [agent-tasks](https://github.com/LanNguyenSi/agent-tasks) | [agent-tasks.opentriologue.ai](https://agent-tasks.opentriologue.ai) | active |
-| **agent-tasks-cli** | CLI client for agent-tasks | [agent-tasks-cli](https://github.com/LanNguyenSi/agent-tasks-cli) | | beta |
 | **agent-preflight** | Local validation before push or handoff | [agent-preflight](https://github.com/LanNguyenSi/agent-preflight) | | beta |
 | **deploy-panel** | Deployment management, rollback, status | [deploy-panel](https://github.com/LanNguyenSi/deploy-panel) | [deploy-panel.opentriologue.ai](https://deploy-panel.opentriologue.ai) | active |
 | **agent-relay** | Controlled execution on target servers | [agent-relay](https://github.com/LanNguyenSi/agent-relay) | via deploy-panel | active |

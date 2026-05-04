@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Module-specific bug or feature
+    url: https://github.com/LanNguyenSi/project-os/blob/master/README.md
+    about: Most issues belong in the module's own repo. See the README for per-module links.
+  - name: Security report
+    url: https://github.com/LanNguyenSi/project-os/blob/master/SECURITY.md
+    about: Please report security-sensitive issues privately.

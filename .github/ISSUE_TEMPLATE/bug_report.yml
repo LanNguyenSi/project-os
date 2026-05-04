@@ -1,0 +1,28 @@
+name: Documentation bug
+description: Report a defect in the project-os README, diagrams, docs, or registry
+labels: ["bug", "docs"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - README map
+        - architecture diagram
+        - docs/
+        - registry entry
+        - other / unsure
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What's wrong?
+      description: Quote the affected line or describe the inaccuracy.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Suggested correction
+      description: Optional, but helpful.
